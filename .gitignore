@@ -11,6 +11,9 @@ web/bundles/*
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
+app/data/*
+.idea
+.travis.yml
 
 # Composer
 composer.phar
