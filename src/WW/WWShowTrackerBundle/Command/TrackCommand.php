@@ -5,6 +5,7 @@ namespace WW\WWShowTrackerBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use WW\WWShowTrackerBundle\Entity\Show;
 
@@ -17,7 +18,7 @@ class TrackCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('tracker:track');
+        $this->setName('tracker:track')->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
     /**
@@ -41,7 +42,7 @@ class TrackCommand extends ContainerAwareCommand
 				$output->writeln("No new content for $show :(");
 		}
 
-		if($found)
+		if($found && !$input->getOption('dry-run'))
 		{
 			$message = \Swift_Message::newInstance()
 				->setSubject('Nuevos episodios!')
@@ -62,8 +63,8 @@ class TrackCommand extends ContainerAwareCommand
 			$spool->flushQueue($container->get('swiftmailer.transport.real'));
 
 
-			$manager->flush();
 		}
+        $manager->flush();
     }
 
 	private function doCheck(Show $show, array $data, array &$found = array())

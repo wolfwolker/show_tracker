@@ -17,3 +17,4 @@ app/data/*
 
 # Composer
 composer.phar
+atlassian-ide-plugin.xml
